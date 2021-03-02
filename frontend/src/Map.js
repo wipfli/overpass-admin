@@ -4,14 +4,11 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 import { IconButton, Typography } from '@material-ui/core'
-import MyLocationIcon from '@material-ui/icons/MyLocation'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Remove'
 import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
 import Tooltip from '@material-ui/core/Tooltip'
-
-import style from './style'
 
 const Map = ({
     viewportWidth,
@@ -42,7 +39,7 @@ const Map = ({
     useEffect(() => {
         const map = new maplibregl.Map({
             container: mapContainerRef.current,
-            style: style,
+            style: 'https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte.vt/style.json',
             center: [centerLongitude, centerLatitude],
             zoom: zoom,
             attributionControl: false
