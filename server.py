@@ -18,7 +18,7 @@ def select(gdf, bbox):
     bbox_polygon = shapely.geometry.box(*bbox, ccw=True)
     bbox_gdf = gpd.GeoDataFrame(gpd.GeoSeries(bbox_polygon), 
                                 columns=['geometry'], crs='EPSG:4326')
-    return sjoin(bbox_gdf, gdf, how='right', op='intersects')
+    return sjoin(gdf, bbox_gdf, how='inner', op='intersects')
 
 def get_bbox(longitude0, latitude0, longitude1, latitude1):
     return (longitude0, latitude0, longitude1, latitude1)
@@ -51,7 +51,7 @@ app = FastAPI()
 async def root():
     return {'message': 'Hello World'}
 
-@app.get('/layer-names')
+@app.get('/layers')
 async def layer_names():
     return get_layer_names(layers)
 
