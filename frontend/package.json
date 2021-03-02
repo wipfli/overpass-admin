@@ -1,0 +1,21 @@
+{
+    "name": "overpass-admin",
+    "version": "1.0.0",
+    "description": "Access swisstopo data with an overpass-like API",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "parcel index.html",
+        "watch": "parcel watch index.html --out-dir build --public-url .",
+        "build": "parcel build index.html --out-dir build --no-source-maps --no-content-hash index.js --public-url ."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@material-ui/core": "^4.11.3",
+        "@material-ui/icons": "^4.11.2",
+        "maplibre-gl": "^1.13.0-rc.5",
+        "parcel": "1.12.3",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1"
+    }
+}
