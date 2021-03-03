@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import Response
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import shapely
 from shapely.geometry import Point, Polygon
@@ -46,6 +47,14 @@ for filename in get_filenames(folder):
     layers[get_name(filename)] = read_shp(filename)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=['*'],
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
 
 @app.get('/')
 async def root():
