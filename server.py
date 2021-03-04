@@ -83,4 +83,4 @@ async def query(
 
 app.mount('/', StaticFiles(directory='frontend/build', html=True), name='frontend')
 
-uvicorn.run(app, host='0.0.0.0', port=15151)
+uvicorn.run(app, host='0.0.0.0', port=8000)
