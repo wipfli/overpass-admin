@@ -28,7 +28,11 @@ const App = () => {
                 centerLatitude={47.35257}
                 shareMap={setMap}
             />
-            <Select map={map} />
+            <Select 
+                map={map} 
+                viewportHeight={viewportHeight}
+                viewportWidth={viewportWidth}
+            />
         </div>
     )
 }
