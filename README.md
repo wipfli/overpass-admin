@@ -11,9 +11,10 @@ pip install uvicorn
 pip install aiofiles
 pip install geopandas
 pip install rtree
+pip install requests
 
 mkdir shapefiles
-# put .shp including .shx into this folder
+python download.py
 ```
 
 
