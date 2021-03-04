@@ -17,7 +17,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Snackbar from '@material-ui/core/Snackbar'
 
-const prefix = ''
+const prefix = 'http://tiqiblitz.ethz.ch:8000'
 
 const Select = ({ map, viewportHeight, viewportWidth }) => {
     const [layer, setLayer] = useState('loading...')
@@ -31,9 +31,11 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
     }
 
     useEffect(() => {
-        axios.get(`${prefix}/layers`)
+        axios.get('https://api3.geo.admin.ch/rest/services/api/MapServer')
             .then(res => {
-                const sortedLayers = res.data.sort()
+                const sortedLayers = res.data.layers.map(layer => {
+                    return layer.layerBodId
+                }).sort()
                 setLayers(sortedLayers)
                 setLayer(sortedLayers[0])
             })
@@ -54,15 +56,7 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                 latitude1
             ]
         ] = map.getBounds().toArray()
-        const url = buildUrl(`${prefix}/query`, {
-            queryParams: {
-                layer: layer,
-                longitude0: longitude0,
-                latitude0: latitude0,
-                longitude1: longitude1,
-                latitude1: latitude1,
-            }
-        })
+        const url = `http://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryEnvelope&geometry=${longitude0},${latitude0},${longitude1},${latitude1}&imageDisplay=500,600,96&mapExtent=${longitude0},${latitude0},${longitude1},${latitude1}&tolerance=1&layers=all:${layer}&sr=4326&geometryFormat=geojson`
         return url
     }
 
@@ -71,8 +65,8 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
         setProperties(null)
         axios.get(getQueryUrl())
             .then(res => {
-                if (res.data.features.length > 0) {
-                    setSnack(`Loaded ${res.data.features.length} features.`)
+                if (res.data.results.length > 0) {
+                    setSnack(`Loaded ${res.data.results.length} features.`)
                 }
                 else {
                     setSnack('Found no features.')
@@ -81,9 +75,17 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                 if (!map.getSource('my-overlay')) {
                     map.addSource('my-overlay', {
                         type: 'geojson',
-                        data: res.data,
+                        data: {
+                            type: 'FeatureCollection',
+                            features: res.data.results,
+                        },
                     })
                     map.addLayer({
+                        'filter': [
+                            '==',
+                            '$type',
+                            'Polygon'
+                        ],
                         'id': 'my-overlay-fill',
                         'source': 'my-overlay',
                         'type': 'fill',
@@ -128,11 +130,14 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                     })
                 }
                 else {
-                    map.getSource('my-overlay').setData(res.data)
+                    map.getSource('my-overlay').setData({
+                        type: 'FeatureCollection',
+                        features: res.data.results,
+                    })
                 }
             })
             .catch(err => {
-                console.log(err)
+                setSnack('Error loading features.')
             })
 
     }
