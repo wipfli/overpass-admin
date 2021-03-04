@@ -18,7 +18,7 @@ const Map = ({
     shareMap,
 }) => {
 
-    const [zoom, setZoom] = useState(6)
+    const [zoom, setZoom] = useState(8)
     const [map, setMap] = useState(null)
     const mapContainerRef = useRef(null)
 
@@ -111,7 +111,6 @@ const Map = ({
             }}>
                 <Box display="flex" justifyContent="flex-end" mx={1} color="text.secondary">
                     <Typography style={{ fontSize: 12 }}>
-                        <Link color="inherit" href="https://www.openstreetmap.org/about/">©OpenStreetMap </Link>
                         <Link color="inherit" href="https://www.geo.admin.ch/">©swisstopo </Link>
                     </Typography>
                 </Box>

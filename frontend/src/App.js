@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Map from './Map'
+import Select from './Select'
 
 const App = () => {
 
@@ -27,6 +28,7 @@ const App = () => {
                 centerLatitude={47.35257}
                 shareMap={setMap}
             />
+            <Select map={map} />
         </div>
     )
 }
