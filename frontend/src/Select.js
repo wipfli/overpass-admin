@@ -84,6 +84,11 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                         data: res.data,
                     })
                     map.addLayer({
+                        'filter': [
+                            '==',
+                            '$type',
+                            'Polygon'
+                        ],
                         'id': 'my-overlay-fill',
                         'source': 'my-overlay',
                         'type': 'fill',
