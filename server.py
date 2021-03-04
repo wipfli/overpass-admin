@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 import shapely
 from shapely.geometry import Point, Polygon
@@ -56,10 +57,6 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-@app.get('/')
-async def root():
-    return {'message': 'Hello World'}
-
 @app.get('/layers')
 async def layer_names():
     return get_layer_names(layers)
@@ -84,5 +81,6 @@ async def query(
         media_type='application/json'
     )
 
+app.mount('/', StaticFiles(directory='frontend/build', html=True), name='frontend')
 
 uvicorn.run(app, host='0.0.0.0', port=15151)
