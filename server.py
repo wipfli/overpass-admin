@@ -57,16 +57,16 @@ layers = {}
 
 folder = './shapefiles/'
 layer_names = get_layer_names(folder)
-for layer_name in layer_names:
+for i, layer_name in enumerate(layer_names):
     filename = find_file(layer_name, folder)
     if filename:
-        print('reading layer', layer_name)
+        print(f'({i + 1}/{len(layer_names)}) reading layer {layer_name}')
         try:
             layers[layer_name] = read_shp(filename)
         except ValueError:
             print(f'error, skipping {layer_name}')
     else:
-        print('format unknown, skipping', layer_name)
+        print(f'({i + 1}/{len(layer_names)}) format unknown, skipping {layer_name}')
 
 print('skipped in total', (len(layer_names) - len(layers)), 'layers')
 print('loaded in total', len(layers), 'layers')
