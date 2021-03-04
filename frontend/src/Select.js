@@ -20,7 +20,7 @@ const Select = ({ map }) => {
     }
 
     useEffect(() => {
-        axios.get('http://loki.lab:15151/layers')
+        axios.get('/layers')
             .then(res => {
                 setLayers(res.data)
                 setLayer(res.data[0])
@@ -42,7 +42,7 @@ const Select = ({ map }) => {
                 latitude1
             ]
         ] = map.getBounds().toArray()
-        const url = buildUrl('http://loki.lab:15151/query', {
+        const url = buildUrl('/query', {
             queryParams: {
                 layer: layer,
                 longitude0: longitude0,
