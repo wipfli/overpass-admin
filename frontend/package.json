@@ -1,6 +1,7 @@
 {
     "name": "overpass-admin",
     "version": "1.0.0",
+    "homepage": "./",
     "description": "Access swisstopo data with an overpass-like API",
     "author": "",
     "license": "ISC",
