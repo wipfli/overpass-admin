@@ -56,7 +56,7 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                 latitude1
             ]
         ] = map.getBounds().toArray()
-        const url = `http://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryEnvelope&geometry=${longitude0},${latitude0},${longitude1},${latitude1}&imageDisplay=500,600,96&mapExtent=${longitude0},${latitude0},${longitude1},${latitude1}&tolerance=1&layers=all:${layer}&sr=4326&geometryFormat=geojson`
+        const url = `https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometryType=esriGeometryEnvelope&geometry=${longitude0},${latitude0},${longitude1},${latitude1}&imageDisplay=500,600,96&mapExtent=${longitude0},${latitude0},${longitude1},${latitude1}&tolerance=1&layers=all:${layer}&sr=4326&geometryFormat=geojson`
         return url
     }
 
