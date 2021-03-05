@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios'
-import buildUrl from 'build-url'
 
 import Box from '@material-ui/core/Box'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import MaterialUISelect from '@material-ui/core/Select'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
@@ -16,19 +11,14 @@ import ListItemText from '@material-ui/core/ListItemText'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Snackbar from '@material-ui/core/Snackbar'
-
-const prefix = 'http://tiqiblitz.ethz.ch:8000'
+import TextField from '@material-ui/core/TextField'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const Select = ({ map, viewportHeight, viewportWidth }) => {
     const [layer, setLayer] = useState('loading...')
     const [layers, setLayers] = useState(['loading...'])
     const [snack, setSnack] = useState(null)
-
     const [properties, setProperties] = useState(null)
-
-    const handleChange = e => {
-        setLayer(e.target.value)
-    }
 
     useEffect(() => {
         axios.get('https://api3.geo.admin.ch/rest/services/api/MapServer')
@@ -152,17 +142,16 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
 
                 <Paper>
                     <Box m={1} p={1}>
-                        <FormControl>
-                            <InputLabel>Layer</InputLabel>
-                            <MaterialUISelect
-                                value={layer}
-                                onChange={handleChange}
-                            >
-                                {layers.map((layerName, index) => {
-                                    return <MenuItem value={layerName} key={index.toString()}>{layerName}</MenuItem>
-                                })}
-                            </MaterialUISelect>
-                        </FormControl>
+                        <Autocomplete 
+                            id="autocomplete"
+                            value={layer}
+                            options={layers}
+                            getOptionLabel={option => option}
+                            style={{minWidth: 300}}
+                            onChange={(e, value) => setLayer(value)}
+                            renderInput={params => <TextField {...params} label="Select layer" variant="outlined" />}
+                        />
+
 
                     </Box>
                 </Paper>
