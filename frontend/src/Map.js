@@ -78,9 +78,10 @@ const Map = ({
                 ref={mapContainerRef}
                 style={{
                     position: 'absolute',
-                    width: (viewportWidth - 1),
-                    height: (viewportHeight - 1),
-                    overflow: 'hidden'
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
                 }}
             />
 
