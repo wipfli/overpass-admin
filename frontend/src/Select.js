@@ -98,6 +98,36 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                         'filter': [
                             '==',
                             '$type',
+                            'LineString'
+                        ],
+                        'id': 'my-overlay-linestring',
+                        'source': 'my-overlay',
+                        'type': 'line',
+                        'paint': {
+                            'line-color': '#2980b9',
+                            'line-width': 2,
+                            'line-opacity': 0.8
+                        }
+                    })
+                    map.addLayer({
+                        'filter': [
+                            '==',
+                            '$type',
+                            'LineString'
+                        ],
+                        'id': 'my-overlay-linestring-clickregion',
+                        'source': 'my-overlay',
+                        'type': 'line',
+                        'paint': {
+                            'line-color': '#2980b9',
+                            'line-width': 20,
+                            'line-opacity': 0.0
+                        }
+                    })
+                    map.addLayer({
+                        'filter': [
+                            '==',
+                            '$type',
                             'Point'
                         ],
                         'id': 'my-overlay-point',
@@ -113,6 +143,9 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                         setProperties(e.features[0].properties)
                     })
                     map.on('click', 'my-overlay-line', e => {
+                        setProperties(e.features[0].properties)
+                    })
+                    map.on('click', 'my-overlay-linestring-clickregion', e => {
                         setProperties(e.features[0].properties)
                     })
                     map.on('click', 'my-overlay-point', e => {
