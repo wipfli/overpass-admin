@@ -32,7 +32,15 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
             .catch(err => console.log(err))
     }, [])
 
-    const getQueryUrl = () => {
+    useEffect(() => {
+        const [, hashLayer] = window.location.hash.split('/')
+        if (map && layers.includes(hashLayer) && hashLayer != layer) {
+            setLayer(hashLayer)
+            load(hashLayer)
+        }
+    }, [map, layers])
+
+    const getQueryUrl = layer => {
         if (!map) {
             return ''
         }
@@ -50,10 +58,12 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
         return url
     }
 
-    const load = () => {
+    const load = layer => {
+        console.log('layer', layer)
+        console.log('queryUrl()', getQueryUrl(layer))
         setSnack('loading...')
         setProperties(null)
-        axios.get(getQueryUrl())
+        axios.get(getQueryUrl(layer))
             .then(res => {
                 if (res.data.results.length > 0) {
                     setSnack(`Loaded ${res.data.results.length} features.`)
@@ -162,8 +172,21 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
             .catch(err => {
                 setSnack('Error loading features.')
             })
-
     }
+
+    useEffect(() => {
+        if (layer != 'loading...') {
+            const [
+                ,
+                ,
+                hashLongitude,
+                hashLatitude,
+                hashZoom,
+            ] = window.location.hash.split('/')
+            const newHash = `#/${layer}/${hashLongitude}/${hashLatitude}/${hashZoom}/`
+            window.history.replaceState(undefined, undefined, newHash)
+        }
+    }, [layer])
 
     return (
         <div style={{
@@ -184,19 +207,17 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                             onChange={(e, value) => setLayer(value)}
                             renderInput={params => <TextField {...params} label="Select layer" variant="outlined" />}
                         />
-
-
                     </Box>
                 </Paper>
                 <Box my={1} display="flex" flexDirection="row">
                     <Box>
-                        <Button variant="contained" color="primary" onClick={load}>
+                        <Button variant="contained" color="primary" onClick={() => load(layer)}>
                             Show
                         </Button>
                     </Box>
                     <Box mx={1}>
                         <Button variant="contained" color="primary" onClick={() => {
-                            window.open(getQueryUrl())
+                            window.open(getQueryUrl(layer))
                         }}>
                             GeoJSON
                         </Button>
@@ -225,7 +246,6 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
                                 })}
                             </List>
                         </Box>
-
                     </Box>
                 </Paper>}
             </Box>
@@ -246,7 +266,6 @@ const Select = ({ map, viewportHeight, viewportWidth }) => {
             />
         </div>
     )
-
 }
 
 export default Select

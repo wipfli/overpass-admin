@@ -18,9 +18,21 @@ const Map = ({
     shareMap,
 }) => {
 
-    const [zoom, setZoom] = useState(8)
+    const [
+        ,
+        hashLayer,
+        hashLongitude,
+        hashLatitude,
+        hashZoom,
+    ] = window.location.hash.split('/')
+
+    const [zoom, setZoom] = useState(hashZoom ? Number(hashZoom) : 7)
     const [map, setMap] = useState(null)
     const mapContainerRef = useRef(null)
+    const [center, setCenter] = useState({
+        lng: hashLongitude ? Number(hashLongitude) : centerLongitude, 
+        lat: hashLatitude ? Number(hashLatitude) : centerLatitude,
+    })
 
     const zoomIn = () => {
         if (map) {
@@ -40,9 +52,9 @@ const Map = ({
         const map = new maplibregl.Map({
             container: mapContainerRef.current,
             style: 'https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte.vt/style.json',
-            center: [centerLongitude, centerLatitude],
+            center: center,
             zoom: zoom,
-            attributionControl: false
+            attributionControl: false,
         })
 
         const scale = new maplibregl.ScaleControl({
@@ -55,6 +67,7 @@ const Map = ({
         map.touchZoomRotate.disableRotation()
 
         map.on('move', () => {
+            setCenter(map.getCenter())
             setZoom(map.getZoom())
         })
 
@@ -71,6 +84,16 @@ const Map = ({
             map.resize()
         }
     }, [viewportWidth, viewportHeight])
+
+    useEffect(() => {
+        const [
+            ,
+            hashLayer
+        ] = window.location.hash.split('/')
+        const newHash = `#/${hashLayer}/${center.lng.toFixed(6)}/${center.lat.toFixed(6)}/${zoom.toFixed(1)}/`
+        window.history.replaceState(undefined, undefined, newHash)
+    
+    }, [center, zoom])
 
     return (
         <div>

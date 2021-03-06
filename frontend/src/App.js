@@ -24,12 +24,12 @@ const App = () => {
             <Map
                 viewportWidth={viewportWidth}
                 viewportHeight={viewportHeight}
-                centerLongitude={8.55301}
-                centerLatitude={47.35257}
+                centerLongitude={8}
+                centerLatitude={47}
                 shareMap={setMap}
             />
-            <Select 
-                map={map} 
+            <Select
+                map={map}
                 viewportHeight={viewportHeight}
                 viewportWidth={viewportWidth}
             />
